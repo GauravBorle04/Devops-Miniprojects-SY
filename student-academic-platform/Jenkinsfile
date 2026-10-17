@@ -66,6 +66,21 @@ pipeline {
                 }
             }
         }
+
+        stage('Kubernetes Minikube Deployment') {
+            steps {
+                dir('student-academic-platform') {
+                    echo 'Deploying the new image to the Minikube cluster...'
+                    sh '''
+                        minikube image load ${DOCKER_IMAGE_NAME}:${IMAGE_TAG}
+                        sed "s|image: .*|image: ${DOCKER_IMAGE_NAME}:${IMAGE_TAG}|" k8s/deployment.yaml | kubectl apply -f -
+                        kubectl apply -f k8s/service.yaml
+                        kubectl rollout status deployment/student-deployment --timeout=180s
+                        kubectl get pods -l app=student-platform -o wide
+                    '''
+                }
+            }
+        }
     }
 
     post {
