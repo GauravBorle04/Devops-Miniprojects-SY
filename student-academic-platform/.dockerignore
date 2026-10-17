@@ -1,0 +1,17 @@
+.git
+.gitignore
+.dockerignore
+__pycache__/
+*.py[cod]
+venv/
+.venv/
+env/
+.pytest_cache/
+.coverage
+htmlcov/
+reports/
+*.xml
+*.log
+Jenkinsfile
+k8s/
+README.md
